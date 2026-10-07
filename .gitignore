@@ -1,0 +1,42 @@
+## ====== Среда разработки (IDE) ======
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln.docstates
+
+## ====== ОС мусор ======
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+## ====== .NET Бэкенд (src-backend) ======
+# Игнорируем результаты компиляции
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+bld/
+[Bb]in/
+[Oo]bj/
+
+# Игнорируем файлы пользовательских настроек и секреты
+*.user
+*.userosscache
+*.sln.DotSettings.user
+appsettings.Development.json
+appsettings.local.json
+
+# Игнорируем файлы локальной БД SQLite, которые будут создаваться при тестах
+*.db
+*.sqlite
+*.sqlite3
+
+## ====== Дополнительно для Tauri / Node (на случай, если локальные не поймают) ======
+node_modules/
+src-tauri/target/
+src-tauri/binaries/
+
+# proof-of-concept часть
+src-backend-poc/

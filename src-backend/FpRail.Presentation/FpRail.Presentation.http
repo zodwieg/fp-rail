@@ -1,0 +1,6 @@
+@FpRail.Presentation_HostAddress = http://localhost:5042
+
+GET {{FpRail.Presentation_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

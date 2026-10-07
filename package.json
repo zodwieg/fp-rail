@@ -1,0 +1,8 @@
+{
+  "name": "fp-rail-monorepo",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm --filter src-tauri exec tauri dev",
+    "build": "pnpm --filter src-tauri exec tauri build"
+  }
+}

@@ -1,25 +1,35 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import * as maplibregl from 'maplibre-gl';
 import { MAP_CONFIG } from '../../../core/config/map.config';
+import { BehaviorSubject, filter, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MapService implements OnDestroy {
-  private map: maplibregl.Map | null = null;
+  private map$ = new BehaviorSubject<maplibregl.Map | null>(null);
 
   /**
-   * Инициализирует интерактивную карту MapLibreGL.
-   * 
-   * Если экземпляр карты уже существует, повторная инициализация 
-   * не выполняется во избежание утечек памяти.
-   * 
-   * @param container HTML-элемент, в который будет встроена карта.
+   * Возвращает поток с экземпляром карты, когда она готова (после события 'load')
    */
+  public get mapReady$(): Observable<maplibregl.Map> {
+  return this.map$.asObservable().pipe(
+    filter((map): map is maplibregl.Map => map !== null)
+  );
+}
+  
+  /**
+   * Прямой доступ к текущему инстансу карты (если нужен)
+   */
+  public get mapInstance(): maplibregl.Map | null {
+    return this.map$.value;
+  }
+
+
   public initMap(container: HTMLDivElement): void {
-    if (this.map) return;
-    // Обычный комментарий
-    this.map = new maplibregl.Map({
+    if (this.map$.value) return;
+
+    const mapInstance = new maplibregl.Map({
       container: container,
       style: MAP_CONFIG.style,
       center: MAP_CONFIG.defaultCenter,
@@ -41,16 +51,18 @@ export class MapService implements OnDestroy {
       loadImageAsync('/assets/map-icons/metro_bg.svg')
     ]).then(([imgIcon, imgBg]) => {
       
-      // 3. Ждем готовности самой карты
-      this.map?.on('load', () => {
+      mapInstance.on('load', () => {
         try {
           const centerCanvas = this.mergeMetroLayers(imgBg, imgIcon, '#007aff');
-          this.map?.addImage('subway-center-combined', centerCanvas);
+          mapInstance.addImage('subway-center-combined', centerCanvas);
 
           const entranceCanvas = this.mergeMetroLayers(imgBg, imgIcon, '#34c759');
-          this.map?.addImage('subway-entrance-combined', entranceCanvas);
+          mapInstance.addImage('subway-entrance-combined', entranceCanvas);
 
           console.log('Иконки метро добавлены со 100% гарантией синхронизации!');
+          
+          // Карта полностью загружена и готова к работе (в том числе к рисованию)
+          this.map$.next(mapInstance);
         } catch (error) {
           console.error('Ошибка сборки слоев:', error);
         }
@@ -58,50 +70,46 @@ export class MapService implements OnDestroy {
 
     }).catch(err => {
       console.error('Критическая ошибка загрузки файлов иконок из ассетов:', err);
+      // Если иконки упали, карту всё равно стоит отдать для работы
+      mapInstance.on('load', () => this.map$.next(mapInstance));
     });
 
-    this.map.addControl(new maplibregl.NavigationControl(), 'top-right');
+    mapInstance.addControl(new maplibregl.NavigationControl(), 'top-right');
   }
 
   private mergeMetroLayers(bgHtmlImage: HTMLImageElement, iconHtmlImage: HTMLImageElement, colorHex: string): HTMLImageElement {
     const canvas = document.createElement('canvas');
-    const size = 32; // Фиксированный размер для четкости (Retina-friendly)
+    const size = 32;
     canvas.width = size;
     canvas.height = size;
     const ctx = canvas.getContext('2d');
 
     if (!ctx) throw new Error('Не удалось получить 2D контекст Canvas');
 
-    // Шаг А: Создаем буферный холст для перекраски фона
     const bgCanvas = document.createElement('canvas');
     bgCanvas.width = size;
     bgCanvas.height = size;
     const bgCtx = bgCanvas.getContext('2d');
     
     if (bgCtx) {
-      // Явно указываем размеры отрисовки (size, size), чтобы не зависеть от внутренних багов SVG
       bgCtx.drawImage(bgHtmlImage, 0, 0, size, size);
       bgCtx.globalCompositeOperation = 'source-in';
       bgCtx.fillStyle = colorHex;
       bgCtx.fillRect(0, 0, size, size);
     }
 
-    // Б. Переносим цветную подложку на основной холст
     ctx.drawImage(bgCanvas, 0, 0);
-
-    // В. Накладываем черный контур и букву М строго поверх круга
     ctx.drawImage(iconHtmlImage, 0, 0, size, size);
 
-    // Г. Экспортируем результат в новую чистую картинку
     const resultImg = new Image(size, size);
     resultImg.src = canvas.toDataURL('image/png');
     return resultImg;
   }
 
   ngOnDestroy(): void {
-    if (this.map) {
-      this.map.remove();
-      this.map = null;
+    if (this.map$.value) {
+      this.map$.value.remove();
+      this.map$.next(null);
     }
   }
 }

@@ -43,6 +43,9 @@ importers:
       terra-draw:
         specifier: ^1.36.0
         version: 1.36.0
+      terra-draw-maplibre-gl-adapter:
+        specifier: ^1.5.0
+        version: 1.5.0(maplibre-gl@6.12.0)(terra-draw@1.36.0)
       tslib:
         specifier: ^2.3.0
         version: 2.8.1
@@ -4323,6 +4326,12 @@ packages:
   tar@7.5.22:
     resolution: {integrity: sha512-MFO/QzvtAOmJbkhOaCTvbGcFN9L9b+JunIsDwaKljSOdcLMea3NJ1k9Usz/rjdfSXTq4dfzfeS7W4p4YOAAHeA==}
     engines: {node: '>=18'}
+
+  terra-draw-maplibre-gl-adapter@1.5.0:
+    resolution: {integrity: sha512-wUv7WDIKln+cWkJOJZ68cOLwFhcBXlSN3GF56Dx8GLnmTTnQEZbIyzWRHjsxhn+TOXvxBOlCDl5JmCghIW3L4g==}
+    peerDependencies:
+      maplibre-gl: '>=4'
+      terra-draw: ^1.0.0
 
   terra-draw@1.36.0:
     resolution: {integrity: sha512-qvfMP2t8pVJectt3VL4h9VOoRaI7NEaKsvoiU+7rXzKuyDfsc+h0wsbl0d3ru7etiVSwl+ic64YCKVdVrcqJnA==}
@@ -9271,6 +9280,11 @@ snapshots:
       minipass: 7.1.3
       minizlib: 3.1.0
       yallist: 5.0.0
+
+  terra-draw-maplibre-gl-adapter@1.5.0(maplibre-gl@6.12.0)(terra-draw@1.36.0):
+    dependencies:
+      maplibre-gl: 6.12.0
+      terra-draw: 1.36.0
 
   terra-draw@1.36.0: {}
 

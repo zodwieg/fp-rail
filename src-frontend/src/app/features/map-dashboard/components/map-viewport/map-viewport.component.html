@@ -1,1 +1,13 @@
-<div #mapContainer class="map-container"></div>
+<div class="map-wrapper">
+  <div #mapContainer class="map-container"></div>
+  
+  <!-- Простая панель переключения режимов -->
+  <div class="draw-toolbar">
+    <button (click)="changeMode('static')">Просмотр</button>
+    <button (click)="changeMode('point')">📍 Точка</button>
+    <button (click)="changeMode('linestring')">📏 Линия</button>
+    <button (click)="changeMode('polygon')">⬡ Полигон</button>
+    <button (click)="changeMode('select')">🖐 Выбрать/Редактировать</button>
+    <button (click)="clearAll()" class="btn-clear">Очистить</button>
+  </div>
+</div>

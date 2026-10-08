@@ -5,14 +5,18 @@ namespace FpRail.Domain.Network;
 
 public class Connection : Entity
 {
+    /// <summary>
+    /// Идентификатор начального узла перегона
+    /// </summary>
     public Guid FromNodeId { get; private set; }
+
+    /// <summary>
+    /// Идентификатор конечного узла перегона
+    /// </summary>
     public Guid ToNodeId { get; private set; }
 
-    // Базовая ось пути (LineString из NTS). 
-    // Хранит в себе всю сырую ломаную со всеми микро-изгибами (Kinks)
     public LineString Geometry { get; private set; }
 
-    // Внутренние «настоящие» ребра движения (пути)
     private readonly List<Track> _tracks = new();
     public IReadOnlyCollection<Track> Tracks => _tracks.AsReadOnly();
 
@@ -27,17 +31,11 @@ public class Connection : Entity
         FromNodeId = fromNodeId;
         ToNodeId = toNodeId;
         Geometry = geometry;
-
-        // По умолчанию при создании перегона, пускай в нем автоматически 
-        // создается классическая двухпутка (один путь туда, один обратно)
-        // Длину берем физическую из геометрии NTS (в зависимости от проекции)
         double initialLength = geometry.Length; 
         _tracks.Add(new Track(Id, isForwardDirection: true, initialLength));
         _tracks.Add(new Track(Id, isForwardDirection: false, initialLength));
     }
 
-    // Бизнес-метод для изменения количества путей на перегоне 
-    // (например, добавление третьего пути перед перекрестком)
     public void AddCustomTrack(bool isForward, double length)
     {
         _tracks.Add(new Track(Id, isForward, length));

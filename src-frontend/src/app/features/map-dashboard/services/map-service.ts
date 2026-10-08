@@ -8,9 +8,17 @@ import { MAP_CONFIG } from '../../../core/config/map.config';
 export class MapService implements OnDestroy {
   private map: maplibregl.Map | null = null;
 
+  /**
+   * Инициализирует интерактивную карту MapLibreGL.
+   * 
+   * Если экземпляр карты уже существует, повторная инициализация 
+   * не выполняется во избежание утечек памяти.
+   * 
+   * @param container HTML-элемент, в который будет встроена карта.
+   */
   public initMap(container: HTMLDivElement): void {
     if (this.map) return;
-
+    // Обычный комментарий
     this.map = new maplibregl.Map({
       container: container,
       style: MAP_CONFIG.style,

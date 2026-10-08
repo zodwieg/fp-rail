@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FpRail.Infrastructure", "Fp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FpRail.Presentation", "FpRail.Presentation\FpRail.Presentation.csproj", "{4CBE16F3-2ABA-4B21-8CEF-6D0FB6E72CA8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FpRail.Infrastructure.Tests", "FpRail.Infrastructure.Tests\FpRail.Infrastructure.Tests.csproj", "{F6B359DD-1DEB-45F8-A26A-63A62242783F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,18 @@ Global
 		{4CBE16F3-2ABA-4B21-8CEF-6D0FB6E72CA8}.Release|x64.Build.0 = Release|Any CPU
 		{4CBE16F3-2ABA-4B21-8CEF-6D0FB6E72CA8}.Release|x86.ActiveCfg = Release|Any CPU
 		{4CBE16F3-2ABA-4B21-8CEF-6D0FB6E72CA8}.Release|x86.Build.0 = Release|Any CPU
+		{F6B359DD-1DEB-45F8-A26A-63A62242783F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6B359DD-1DEB-45F8-A26A-63A62242783F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6B359DD-1DEB-45F8-A26A-63A62242783F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{F6B359DD-1DEB-45F8-A26A-63A62242783F}.Debug|x64.Build.0 = Debug|Any CPU
+		{F6B359DD-1DEB-45F8-A26A-63A62242783F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F6B359DD-1DEB-45F8-A26A-63A62242783F}.Debug|x86.Build.0 = Debug|Any CPU
+		{F6B359DD-1DEB-45F8-A26A-63A62242783F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6B359DD-1DEB-45F8-A26A-63A62242783F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F6B359DD-1DEB-45F8-A26A-63A62242783F}.Release|x64.ActiveCfg = Release|Any CPU
+		{F6B359DD-1DEB-45F8-A26A-63A62242783F}.Release|x64.Build.0 = Release|Any CPU
+		{F6B359DD-1DEB-45F8-A26A-63A62242783F}.Release|x86.ActiveCfg = Release|Any CPU
+		{F6B359DD-1DEB-45F8-A26A-63A62242783F}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

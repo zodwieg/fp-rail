@@ -25,3 +25,5 @@ tauri = { version = "2.12.1", features = [] }
 tauri-plugin-shell = "2.0.0"
 tauri-plugin-log = "2"
 tauri-plugin-http = "2"
+reqwest = { version = "0.13.5", features = ["json"] }
+tokio = "1.53.2"

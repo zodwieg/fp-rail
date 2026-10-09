@@ -23,7 +23,7 @@
       }
     ],
     "security": {
-      "csp": "default-src 'self' tauri: localhost: http://localhost:4200 https://openfreemap.org; worker-src 'self' blob:; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://unpkg.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:;"
+      "csp": "default-src 'self' tauri: http://localhost:4200; connect-src 'self' ipc: http://ipc.localhost http://localhost:5042 https://localhost:7135 https://tiles.openfreemap.org https://openfreemap.org https://maputnik.github.io; worker-src 'self' blob:; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://unpkg.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:;"
     }
   },
   "bundle": {

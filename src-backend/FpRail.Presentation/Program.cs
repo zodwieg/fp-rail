@@ -4,6 +4,25 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowTauri", policy =>
+    {
+        policy.AllowAnyOrigin() // Для PoC можно разрешить всё
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+    });
+});
+
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ListenLocalhost(5042); // Теперь он ВСЕГДА будет слушать http://localhost:5042
+});
+
+builder.Services.AddControllers()
+    .AddApplicationPart(typeof(FPRail.Presentation.Controllers.TramPointsController).Assembly);
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -19,19 +38,19 @@ var summaries = new[]
     "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
 };
 
-app.MapGet("/weatherforecast", () =>
+app.MapControllers();
+
+app.Lifetime.ApplicationStarted.Register(() =>
 {
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast");
+    using var scope = app.Services.CreateScope();
+    var endpointDataSource = scope.ServiceProvider.GetRequiredService<Microsoft.AspNetCore.Routing.EndpointDataSource>();
+    Console.WriteLine("=== ЗАРЕГИСТРИРОВАННЫЕ ЭНДПОИНТЫ .NET ===");
+    foreach (var endpoint in endpointDataSource.Endpoints)
+    {
+        Console.WriteLine($"-> {endpoint.DisplayName}");
+    }
+    Console.WriteLine("========================================");
+});
 
 app.Run();
 

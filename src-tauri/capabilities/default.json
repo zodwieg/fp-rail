@@ -15,8 +15,17 @@
       "allow": [
         {
           "url": "http://127.0.0*"
+        },
+        {
+          "url": "http://localhost:5042"
         }
       ]
     }
-  ]
+  ],
+  "remote": {
+    "urls": [
+      "http://localhost:5042",
+      "https://localhost:7135"
+    ]
+  }
 }
